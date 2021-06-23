@@ -1,0 +1,21 @@
+label > input {
+    margin-top: 5px;
+    border-radius: 5px;
+    outline: none;
+}
+
+.btn-login {
+    border-radius: 10px;
+}
+
+button {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--blue);
+    margin-top: 5px;
+    padding: .5em 1em;
+    background-color: var(--white);
+    border: none;
+    cursor: pointer;
+    transition: all .5s ease;
+}
