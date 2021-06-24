@@ -7,10 +7,17 @@ import { useAuth } from '../../contexts/auth';
 
 export const HomePage: FC = () => {
   const [products, setProducts] = useState([])
+  const [favorites, setFavorites] = useState([])
   const [userName, setUsername] = useState("")
   const [name, setName] = useState("")
+  const [navigation, setNavigation] = useState("Produtos")
   const { signed, Logout } = useAuth();
   const history = useHistory();
+
+  function handleClickNav(event: any) {
+    event.preventDefault()
+    setNavigation(event['target'].text)
+  }
 
   useEffect(() => {
     if (!signed)
@@ -21,14 +28,14 @@ export const HomePage: FC = () => {
     setUsername(userData['username'])
 
     axios
-      .get("http://localhost:8080/Products")
+      .get(`http://localhost:8080/Products?userId=${userData['_id']}`,)
       .then((response) => {
         setProducts(response.data.products)
       })
       .catch((error) => {
         alert("Ocorreu um erro ao buscar os items");
       });
-  }, []);
+  }, [navigation]);
 
   return (
     <div className="container">
@@ -51,22 +58,20 @@ export const HomePage: FC = () => {
       </header>
 
       <div className="topnav">
-        <a className="" href="">Home</a>
-        <a className="active" href="">Produtos</a>
-        <a className="" href="">Favoritos</a>
+        <a className="" >Home</a>
+        <a className={navigation == 'Produtos' ? "active" : ""} href="" onClick={handleClickNav}>Produtos</a>
+        <a className={navigation == 'Favoritos' ? "active" : ""} href="" onClick={handleClickNav}>Favoritos</a>
       </div>
 
-
       <main className="cards-container">
-        {products.map(e => <ProductCard
-          key={e['_id']}
-          _id={e['_id']}
-          name={e['description']}
-          imgSrc={e['imgUrl']}
-          afterPrice={Number(e['afterPrice'])}
-          price={Number(e['price'])} 
-          isFavorited={false} />)}
+        {
+          navigation == 'Produtos' ?
+            products.map(e => <ProductCard key={e['_id']} _id={e['_id']} name={e['description']} imgSrc={e['imgUrl']} afterPrice={Number(e['afterPrice'])} price={Number(e['price'])} isFavorited={e['isFavorited']} />)
+            :
+            products.map(e => e['isFavorited'] ? <ProductCard key={e['_id']} _id={e['_id']} name={e['description']} imgSrc={e['imgUrl']} afterPrice={Number(e['afterPrice'])} price={Number(e['price'])} isFavorited={e['isFavorited']} /> : "")
+        }
       </main>
+
     </div>
   );
 };

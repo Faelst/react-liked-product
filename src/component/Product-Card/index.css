@@ -47,11 +47,16 @@
   
   button.btn-buy{
     width: 80%;
-    background-color: green;
+    background-color: #0373f9;
     border-radius: 5px;
     color: white;
   }
   
+  button.btn-buy:hover{
+    color: white;
+    background-color: green;
+  }
+
   button.btn-like{
     width: 25%;
     margin-left: auto;
