@@ -1,23 +1,25 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { ProductCard } from '../../component/Product-Card';
-import { AuthService } from '../../service/auth';
-import { GlobalStateContext } from '../../state';
 import axios from 'axios'
 import './index.css';
+import { useAuth } from '../../contexts/auth';
 
 export const HomePage: FC = () => {
   const [products, setProducts] = useState([])
-
-  const { state, dispatch } = useContext(GlobalStateContext);
+  const [userName, setUsername] = useState("")
+  const [name, setName] = useState("")
+  const { signed, Logout } = useAuth();
   const history = useHistory();
 
-  const onLogout = () =>
-    AuthService.logout().then(() => dispatch({ type: 'LOGOUT', payload: null }));
-
-  const onLogin = () => history.push('/login');
-
   useEffect(() => {
+    if (!signed)
+      return history.push('/login')
+
+    const userData = JSON.parse(sessionStorage.getItem('@App:user') || "");
+    setName(userData['name'])
+    setUsername(userData['username'])
+
     axios
       .get("http://localhost:8080/Products")
       .then((response) => {
@@ -36,20 +38,14 @@ export const HomePage: FC = () => {
         </div>
         <div className="box-info">
           <div className="user-info">
-            <span>Username: @edu</span>
+            <span>Username: {userName}</span>
             <br />
-            <span>Nome: Eduardo Cristiano</span>
+            <span>Nome: {name}</span>
           </div>
           <div className="end-position">
-            {!state.isLogin ? (
-              <button type="button" onClick={onLogout}>
-                Logout
+            <button type="button" onClick={() => Logout(history)}>
+              Sair
               </button>
-            ) : (
-              <button type="button" onClick={onLogin}>
-                Login
-              </button>
-            )}
           </div>
         </div>
       </header>
@@ -68,7 +64,8 @@ export const HomePage: FC = () => {
           name={e['description']}
           imgSrc={e['imgUrl']}
           afterPrice={Number(e['afterPrice'])}
-          price={Number(e['price'])} />)}
+          price={Number(e['price'])} 
+          isFavorited={false} />)}
       </main>
     </div>
   );

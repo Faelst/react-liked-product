@@ -1,30 +1,18 @@
-import axios from 'axios';
-import React, { FC, useContext } from 'react';
+import React, { FC } from 'react';
 import { useHistory } from 'react-router';
 import { LoginKey, useLoginForm } from '../../model/login';
-import { AuthService } from '../../service/auth';
-import { GlobalStateContext } from '../../state';
+import { useAuth } from '../../contexts/auth'
 
 import './index.css'
 
 export const LoginForm: FC = () => {
   const { register, errors, handleSubmit } = useLoginForm();
-  const { dispatch } = useContext(GlobalStateContext);
-  const history = useHistory();
+  const { signed, Login } = useAuth();
+  
 
-  const onSubmit = handleSubmit(data =>{
-    console.log(data)
-    axios.post('http://localhost:8080/login', data)
-      .then(res => {
-
-      })
-    
-    //return AuthService.login(data)
-      // .then(user => dispatch({ type: 'LOGIN', payload: user }))
-      // .then(() => history.push('/'))
-      // .catch(() => alert('Username or Password Error'))
-  }
-  );
+  const onSubmit = handleSubmit(async data =>{
+    Login(data)
+  });
 
   return (
     <form className="login-form form" onSubmit={onSubmit}>

@@ -1,7 +1,5 @@
-import React, { FC, useContext } from 'react';
-import { useHistory } from 'react-router';
-import { AuthService } from '../../service/auth';
-import { GlobalStateContext } from '../../state';
+import React, { FC, useState } from 'react';
+import api from '../../service/api';
 import './index.css'
 
 interface Product {
@@ -10,13 +8,26 @@ interface Product {
   imgSrc: string
   afterPrice: Number
   price: Number
+  isFavorited: Boolean
 }
 
 export const ProductCard: FC<Product> = (props: Product) => {
-
+  const [isFavorited, setIsFavorited] = useState(props.isFavorited)
   
+  function handleChangeFavorite(event: any){
+    setIsFavorited(!isFavorited)
+    const productId = event['target'].id
+    const userId = JSON.parse(sessionStorage.getItem('@App:user') || "")['_id']
+
+    api.post('/favoriteProduct', {
+      productId: productId,
+      userId: userId,
+      isFavorited: !isFavorited
+    })
+  }
+
   return (
-    <div key={props._id} className="card">
+    <div className="card">
       <img src={props.imgSrc} alt="Avatar"></img>
       <div className="container">
         <h4>
@@ -32,9 +43,9 @@ export const ProductCard: FC<Product> = (props: Product) => {
         <hr />
         <div className="box-btn">
           <button className="btn-buy">Comprar</button>
-          <button className="btn-like">
+          <button id={props._id} className="btn-like" onClick={handleChangeFavorite}>
             <i className="fa fa-thumbs-up"></i>
-            <span className="icon"><img src="./heart.png"></img></span>
+            <span className="icon">{isFavorited ? <img id={props._id} src="./heart-marked.png"></img> : <img id={props._id} src="./heart.png"></img>}</span>
           </button>
         </div>
       </div>
