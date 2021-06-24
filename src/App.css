@@ -18,7 +18,7 @@ html, body, #root {
   color: var(--white)
 }
 
-main {
+main.login-page {
   width: 80%;
   max-width: 960px;
   margin: 0 auto;

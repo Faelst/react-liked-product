@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { FC, useContext } from 'react';
 import { useHistory } from 'react-router';
 import { LoginKey, useLoginForm } from '../../model/login';
@@ -11,11 +12,18 @@ export const LoginForm: FC = () => {
   const { dispatch } = useContext(GlobalStateContext);
   const history = useHistory();
 
-  const onSubmit = handleSubmit(data =>
-    AuthService.login(data)
-      .then(user => dispatch({ type: 'LOGIN', payload: user }))
-      .then(() => history.push('/'))
-      .catch(() => alert('Username or Password Error')),
+  const onSubmit = handleSubmit(data =>{
+    console.log(data)
+    axios.post('http://localhost:8080/login', data)
+      .then(res => {
+
+      })
+    
+    //return AuthService.login(data)
+      // .then(user => dispatch({ type: 'LOGIN', payload: user }))
+      // .then(() => history.push('/'))
+      // .catch(() => alert('Username or Password Error'))
+  }
   );
 
   return (

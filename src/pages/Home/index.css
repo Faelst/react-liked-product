@@ -1,3 +1,90 @@
-main.home-page {
-  text-align: center;
+
+div.container > header{
+  padding: 10px 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+header div {
+  margin: 20px;
+}
+
+div.box-img > img { 
+  width: 90px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.726);
+}
+
+div.box-info {
+  display: flex;
+  background-color: rgba(255, 255, 255, 0.233);
+  width: 100%;
+  height: 100%;
+  border: 2px solid rgba(255, 255, 255, 0.726);
+  border-radius: 10px;
+}
+
+div.box-info button {
+  border-radius: 10px;
+}
+
+div.box-info .end-position{
+  margin-left: auto;
+}
+
+button:hover {
+  background-color: #ffffff5d;
+  border: 1px solid white;
+  color: white;
 } 
+
+nav{
+  width: 100%;
+  height: 4rem;
+  background-color: rgba(255, 255, 255, 0.315);
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  box-shadow: 0 0 .5rem #ffffff;
+}
+
+.topnav {
+  background-color: rgba(51, 51, 51, 0.131);
+  overflow: hidden;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+  background-color: rgb(255, 254, 254);
+  color: #0373f9;
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+  background-color: #ffffff4f;
+  color: white;
+}
+
+main.cards-container{
+  display: flex;
+  flex-wrap: wrap;
+  background-color: #0373f9;
+  border-radius: 3px;
+  flex-basis: 100%;
+  align-content: flex-start;
+  height: 100%;
+  overflow: auto;
+}
